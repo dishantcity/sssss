@@ -1,0 +1,87 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.PayrollRepository;
+
+import com.example.demo.dto.PayrollDto;
+
+import com.example.demo.entities.Payroll;
+
+@Service
+public class PayrollService {
+	
+	
+	@Autowired
+	 PayrollRepository payrollRepository;
+	
+	
+	public void savePayroll(PayrollDto payrollDto) {
+		payrollRepository.save(payrollDtoToPayroll(payrollDto));
+	
+	}
+	
+	public List<PayrollDto> getAllPayroll (){
+		List<Payroll> listPayroll = this.payrollRepository.findAll();
+		List<PayrollDto> payrollDtoList = listPayroll.stream().map(emp -> this.payrollToPayrollDto(emp)).collect(Collectors.toList());
+		
+		return payrollDtoList;
+		
+	}
+	
+		public void deletePayroll(int Id) {
+		
+			payrollRepository.deleteById(Id);
+	}
+		
+		public Payroll savePayroll(Payroll payroll) {
+			return payrollRepository.save(payroll);
+		}
+		
+		 public PayrollDto payrollById(Integer Id)
+		    {
+		        Payroll payroll = this.payrollRepository.findById(Id).get();
+		        // Optional<Employee> byId = employeeReposatory.findById(employeeId);
+		        return this.payrollToPayrollDto(payroll);
+
+		    }
+
+
+	
+	
+	
+	public Payroll payrollDtoToPayroll(PayrollDto payrollDto) {
+		
+		Payroll payroll = new Payroll();
+		payroll.setId(payroll.getId());
+		payroll.setDate_From(payroll.getDate_From());
+		payroll.setDate_To(payroll.getDate_To());
+		payroll.setDateCerated(payroll.getDateCerated());
+		payroll.setRef_No(payroll.getRef_No());
+		payroll.setStatus(payroll.getStatus());
+		payroll.setType(payroll.getType());
+		
+		return null;
+		
+	}
+	
+	public PayrollDto payrollToPayrollDto(Payroll payroll) {
+		
+		PayrollDto payrollDto = new PayrollDto();
+		payroll.setId(payroll.getId());
+		payroll.setDate_From(payroll.getDate_From());
+		payroll.setDate_To(payroll.getDate_To());
+		payroll.setDateCerated(payroll.getDateCerated());
+		payroll.setStatus(payroll.getStatus());
+		payroll.setType(payroll.getType());
+		payroll.setRef_No(payroll.getRef_No());
+		
+		return payrollDto;
+		
+	}
+
+}
