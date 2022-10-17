@@ -1,0 +1,61 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.EmployeeAllowancesDto;
+import com.example.demo.service.EmployeeAllowancesService;
+
+@RestController
+public class EmployeeAllowancesController {
+	
+	@Autowired
+	EmployeeAllowancesService employeeAllowancesService;
+	
+	@PostMapping("/employeeAllowances")
+	 public EmployeeAllowancesDto saveEmp(@RequestBody EmployeeAllowancesDto employeeAllowancesDto)
+ {
+    employeeAllowancesService.saveEmployeeAllowances(employeeAllowancesDto);
+
+     return employeeAllowancesDto;
+
+ }
+	
+	@GetMapping("/employeeAllowances")
+public List<EmployeeAllowancesDto> getEmplpoyeeAllowances()
+{
+    List<EmployeeAllowancesDto> allEmployeeAllowances = employeeAllowancesService.getAllEmployeeAllowances();
+    return allEmployeeAllowances ;
+}
+
+	 @GetMapping("/employeeAllowances/{employeeAllowancesId}")
+	 public EmployeeAllowancesDto getEmployeeAllowancesById(@PathVariable("EmployeeAllowancesId") int Id)
+	    {
+	        return employeeAllowancesService.employeeAllowancesById(Id);
+	    }
+	 	
+	 
+	 @DeleteMapping("/employeeAllowances/{employeeAllowancesId}")
+	    public void deleteEmp(@PathVariable("employeeId") int id){
+	        employeeAllowancesService.deleteEmployeeAllowance(id);
+	    }
+
+	
+	
+
+
+
+
+
+
+	
+	
+
+}
