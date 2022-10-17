@@ -1,0 +1,86 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.Repository.EmployeeRepository;
+
+import com.example.demo.dto.EmployeeDto;
+
+import com.example.demo.entities.Employee;
+
+public class EmployeeService {
+	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
+	public void saveEmployee(EmployeeDto employeeDto) {
+		employeeRepository.save(employeeDtoToEmployee(employeeDto));
+	
+	}
+	
+	public List<EmployeeDto> getAllEmployee(){
+		List<Employee> listEmployee = this.employeeRepository.findAll();
+		List<EmployeeDto> employeeDtoList = listEmployee.stream().map(emp -> this.employeeToEmployeeDto(emp)).collect(Collectors.toList());
+		
+		return employeeDtoList;
+		
+	}
+	
+		public void deleteEmployee(int Id) {
+		
+			employeeRepository.deleteById(Id);
+	}
+		
+		public Employee saveEmployee(Employee employee) {
+			return employeeRepository.save(employee);
+		}
+		
+		 public EmployeeDto employeeById(Integer Id)
+		    {
+		        Employee employee = this.employeeRepository.findById(Id).get();
+		        // Optional<Employee> byId = employeeReposatory.findById(employeeId);
+		        return this.employeeToEmployeeDto(employee);
+
+		    }
+
+	
+	
+	
+	
+	public Employee employeeDtoToEmployee(EmployeeDto employeeDto) {
+		
+		Employee employee = new Employee();
+		employee.setId(employee.getId());
+		employee.setDepId(employee.getDepId());
+		employee.setEmpId(employee.getEmpId());
+		employee.setFiistName(employee.getFiistName());
+		employee.setLastName(employee.getLastName());
+		employee.setMiddleName(employee.getMiddleName());
+		employee.setPositionId(employee.getPositionId());
+		employee.setSalary(employee.getSalary());
+		
+		return employee;
+		
+		
+	}
+	
+	
+	public EmployeeDto employeeToEmployeeDto(Employee employee) {
+		EmployeeDto employeeDto = new EmployeeDto();
+		employeeDto.setDepId(employee.getDepId());
+		employeeDto.setEmpId(employee.getEmpId());
+		employeeDto.setFiistName(employee.getFiistName());
+		employeeDto.setId(employee.getId());
+		employeeDto.setLastName(employee.getLastName());
+		employeeDto.setMiddleName(employee.getMiddleName());
+		
+		employeeDto.setPositionId(employee.getPositionId());
+		employeeDto.setSalary(employee.getSalary());
+		
+		return employeeDto;
+	}
+
+}
