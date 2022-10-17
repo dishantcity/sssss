@@ -1,0 +1,87 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.EmployeeAllowancesRepository;
+
+import com.example.demo.dto.EmployeeAllowancesDto;
+
+import com.example.demo.entities.EmployeeAllowances;
+
+@Service
+public class EmployeeAllowancesService {
+	
+	@Autowired
+	EmployeeAllowancesRepository employeeAllowancesRepository;
+	
+	
+	public void saveEmployeeAllowances(EmployeeAllowancesDto employeeAllowancesDto) {
+		employeeAllowancesRepository.save(employeeAllowancesDtoToEmployeeAllowances(employeeAllowancesDto));
+	
+	}
+	
+	public List<EmployeeAllowancesDto> getAllEmployeeAllowances (){
+		List<EmployeeAllowances> listEmployeeAllowances = this.employeeAllowancesRepository.findAll();
+		List<EmployeeAllowancesDto> employeeAllowanceDtoList = listEmployeeAllowances.stream().map(emp -> this.employeeAllowancesToEmployeeAllowancesDto(emp)).collect(Collectors.toList());
+		
+		return employeeAllowanceDtoList;
+		
+	}
+	
+		public void deleteEmployeeAllowance(int Id) {
+		
+			employeeAllowancesRepository.deleteById(Id);
+	}
+		
+		public EmployeeAllowances saveEmployeeAllowances(EmployeeAllowances employeeAllowances) {
+			return employeeAllowancesRepository.save(employeeAllowances);
+		}
+		
+		 public EmployeeAllowancesDto employeeAllowancesById(Integer Id)
+		    {
+		        EmployeeAllowances employeeAllowances = this.employeeAllowancesRepository.findById(Id).get();
+		        // Optional<Employee> byId = employeeReposatory.findById(employeeId);
+		        return this.employeeAllowancesToEmployeeAllowancesDto(employeeAllowances);
+
+		    }
+
+
+	
+	
+	
+	
+	
+	public EmployeeAllowances employeeAllowancesDtoToEmployeeAllowances(EmployeeAllowancesDto employeeAllowancesDto) {
+		
+		EmployeeAllowances employeeAllowances = new EmployeeAllowances();
+		employeeAllowances.setId(employeeAllowances.getId());
+		employeeAllowances.setAmmount(employeeAllowances.getAmmount());
+		employeeAllowances.setDate_created(employeeAllowances.getDate_created());
+		employeeAllowances.setEffective_date(employeeAllowances.getEffective_date());
+		employeeAllowances.setEmployee_id(employeeAllowances.getEmployee_id());
+		employeeAllowances.setType(employeeAllowances.getType());
+		
+		return employeeAllowances;
+		
+	}
+	
+	
+	public EmployeeAllowancesDto employeeAllowancesToEmployeeAllowancesDto(EmployeeAllowances employeeAllowances) {
+		
+		EmployeeAllowancesDto employeeAllowancesDto = new EmployeeAllowancesDto();
+		employeeAllowancesDto.setId(employeeAllowances.getId());
+		employeeAllowancesDto.setAmmount(employeeAllowancesDto.getAmmount());
+		employeeAllowancesDto.setDate_created(employeeAllowancesDto.getDate_created());
+		employeeAllowancesDto.setEffective_date(employeeAllowancesDto.getEffective_date());
+		employeeAllowancesDto.setEmployee_id(employeeAllowancesDto.getEmployee_id());
+		employeeAllowancesDto.setType(employeeAllowancesDto.getType());
+		
+		return null;
+		
+	}
+
+}
